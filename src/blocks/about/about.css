@@ -1,0 +1,32 @@
+.about {
+    padding: 110px 0;
+}
+
+.about__details {
+    display: flex;
+    list-style-type: none;
+    margin: 70px 0 110px;
+    padding: 0;
+}
+
+.about__details-item {
+    flex-basis: 50%;
+}
+
+.about__heading {
+    max-width: 550px;
+
+    margin: 0;
+    font-size: 20px;
+    font-weight: normal;
+    color: #ffffff;
+}
+
+.about__description {
+    margin: 26px 0 0;
+
+    max-width: 550px;
+    font-size: 14px;
+    color: #ffffff;
+    line-height: 1.43;
+}

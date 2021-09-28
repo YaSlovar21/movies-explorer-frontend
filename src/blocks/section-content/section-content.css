@@ -1,0 +1,16 @@
+.section-content {
+    max-width: 1140px;
+    margin: 0 auto;
+  }
+  
+  
+  
+  @media screen and (max-width: 768px) {
+    .section-content {
+      max-width: 668px;
+    }
+    .section-content_films {
+      max-width: 708px;
+    }
+  }
+    

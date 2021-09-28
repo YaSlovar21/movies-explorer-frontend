@@ -1,0 +1,65 @@
+.form-search {
+
+}
+
+.form-search__line {
+    padding: 10px 10px 10px 25px;
+    border: 1.5px solid rgba(170, 170, 170, 0.2);
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.form-search__input {
+    background: none;
+    border: none;
+    outline: none;
+    color: #8b8b8b;
+    font-size: 18px;
+}
+
+.form-search__button {
+    color: #ffffff;
+    background: transparent;
+    border: none;
+    outline: none;
+    background-color: #4285F4;
+    padding: 17px 20px;
+    border-radius: 5px;
+}
+
+.form-search__filter {
+    display: flex;
+    align-items: center;
+    margin-top: 26px;
+}
+
+.form-search__checkbox {
+    display: none;
+}
+
+.form-search__filterbutton {
+    border: none;
+    outline: none;
+    background-color: #3DDC84;
+    width: 38px;
+    height: 20px;
+    border-radius: 20px;
+    margin-right: 14px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.form-search__tumblr {
+    width: 8px;
+    height: 8px;
+    background-color: #ffffff;
+    border-radius: 4px;
+}
+
+.form-search__label {
+    font-size: 13px;
+    font-weight: normal;
+    color: #ffffff;
+}

@@ -4,7 +4,12 @@ import { Route, Switch } from 'react-router-dom';
 // мои роуты в приложении
 import routes from '../../config/routes';
 
+import Header from '../Header/Header';
+
+import Movies from '../Movies/Movies';
 import Footer from '../Footer/Footer';
+import Promo from '../Promo/Promo';
+
 
 // добавить роут '/saved-movies' и '/profile'
 
@@ -15,6 +20,9 @@ function App() {
       <div className="page">
         <Switch>
           <Route exact path={routes.LANDING}>
+            <Header auth={true} />
+            <Promo />
+            <Movies />
             <Footer />
           </Route>
         </Switch>

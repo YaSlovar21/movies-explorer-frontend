@@ -1,0 +1,81 @@
+.film {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+
+    border-radius: 6px;
+    background-color: #222222;
+
+    box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.08);
+}
+
+.film__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 0 18px;
+    flex-basis: 54px;
+}
+
+.film__name {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.1;
+    color: #ffffff;
+}
+
+.film__duration {
+    margin: 0;
+    font-size: 13px;
+    font-weight: normal;
+    color: #8B8B8B;
+}
+
+.film__poster {
+    max-width: 100%;
+    flex-basis: 200px;
+    object-position: center;
+    object-fit: contain;
+    min-height: 0;
+}
+
+.film__footer {
+    flex-basis: 65px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.film__save-button {
+    border: none;
+    outline: none;
+    border-radius: 30px;
+
+    width: 100px;
+    height: 29px;
+    background-color: #313131;
+    color: #ffffff;
+
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.film__save-button::after {
+    content: 'Сохранить';
+}
+
+.film__save-button_active {
+    background-color: #EE3465;
+}
+
+.film__save-button_active::after {
+    content: '\002713';
+}
+
+@media screen and (max-width: 768px) {
+    .film__poster{
+        flex-basis: 190px;
+    }
+}

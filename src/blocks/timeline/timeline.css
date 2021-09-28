@@ -1,0 +1,23 @@
+.timeline {
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+    text-align: center;
+    color: #8b8b8b;
+    row-gap: 5px;
+}
+
+.timeline__item {
+    margin: 0;
+    font-size: 14px;
+    padding: 9px 0;
+}
+
+.timeline__item_green {
+    background-color: #3DDC84;
+    color: #000000;
+}
+
+.timeline__item_darked {
+    background-color: #303030;
+    color: #ffffff;
+}
