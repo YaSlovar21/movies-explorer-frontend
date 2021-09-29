@@ -3,6 +3,10 @@
     padding: 18px 0;
 }
 
+.header_dark {
+    background-color: transparent;
+}
+
 .header__content {
     display: flex;
     align-items: center;
@@ -50,9 +54,23 @@
 }
 
 
+.header__modal-button {
+    display: none;
+    border: none;
+    outline: none;
+    background: transparent;
+    cursor: pointer;
+    width: 44px;
+    height: 44px;
+    background-image: url(../../images/modal-open.svg);
+    background-size: cover;
+}
+
 @media screen and (max-width: 768px) {
-    .header__menu_private {
+    .header__nav {
         display: none;
     }
-
+    .header__modal-button {
+        display: block;
+    }
 }

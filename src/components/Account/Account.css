@@ -17,6 +17,9 @@
     width: 30px;
     height: 30px;
     background-color: #313131;
+    background-image: url(../../images/icon__acc.svg);
+    background-position: center;
+    background-repeat: no-repeat;
     border-radius: 6px;
     margin-left: 13px;
 }

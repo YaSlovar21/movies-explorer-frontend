@@ -2,35 +2,36 @@ import React from "react";
 import logo from '../../images/header-logo.svg';
 import { Link, useRouteMatch, useLocation } from "react-router-dom";
 
+import routes from "../../config/routes";
+
 import './Header.css';
 
 import Account from "../Account/Account";
 
-function Header({auth}) {
-    auth = true;
+function Header({auth, promo, onModalButtonClick}) {
     const { pathname } = useLocation();
     return (
-    <header class="header">
-        <div class="section-content header__content">
-            <a class="header__logo" href="#">
-                <img src={logo} class="logo" alt="Путешествия по России" />
+    <header className={promo? "header" : "header header_dark"}>
+        <div className="section-content header__content">
+            <a className="header__logo" href="#">
+                <img src={logo} className="logo" alt="Путешествия по России" />
             </a>
-            <nav class="header__nav">
+            <nav className="header__nav">
                 {auth && (
-                    <ul class="header__menu header__menu_private">
-                        <li class="header__menu-item">
-                            <a class="header__link header__link_private" href="#">Фильмы</a>
+                    <ul className="header__menu header__menu_private">
+                        <li className="header__menu-item">
+                            <Link to={routes.MOVIES} className="header__link header__link_private">Фильмы</Link>
                         </li>
-                        <li class="header__menu-item">
-                            <a class="header__link header__link_private" href="#">Сохраненные фильмы</a>
+                        <li className="header__menu-item">
+                            <Link to={routes.SAVED_MOVIES} className="header__link header__link_private">Сохраненные фильмы</Link>
                         </li>
                     </ul>
                 )}
-                <ul class="header__menu">
+                <ul className="header__menu">
                 {!auth ? (
                     <>
-                    <li class="header__menu-item"><a class="header__link" href="#">Регистрация</a></li>
-                    <li class="header__menu-item"><a class="header__link header__link_enter" href="#">Войти</a></li>
+                    <li className="header__menu-item"><Link to={routes.SIGN_UP} className="header__link">Регистрация</Link></li>
+                    <li className="header__menu-item"><Link to={routes.SIGN_IN} className="header__link header__link_enter">Войти</Link></li>
                     </>
                 )   
                 :   ( 
@@ -38,6 +39,9 @@ function Header({auth}) {
                 )}
                 </ul>
             </nav>
+            {auth && (
+            <button className="header__modal-button" onClick={onModalButtonClick}></button>
+            )}
         </div>
     </header>
     );

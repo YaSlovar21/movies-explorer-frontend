@@ -1,6 +1,9 @@
 import React from "react";
 
+import mainImage from '../../images/promo-main.svg';
+
 import './Promo.css';
+
 
 function Promo(){
     return (
@@ -11,7 +14,7 @@ function Promo(){
                     <p className="hero__subtitle">Листайте ниже, чтобы узнать подробнее про этот проект и его создателя</p>
                     <a className="hero__morebutton link-beauty" href="#">Узнать больше</a>
                 </div>
-                <img className="hero__image" src="images/lead-polka-all.jpg" alt="Веб-разработка" />
+                <img className="hero__image" src={mainImage} alt="Веб-разработка" />
             </div>
         </section>
     );
