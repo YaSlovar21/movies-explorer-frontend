@@ -1,6 +1,10 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 import './Login.css';
+
+import logo from '../../images/header-logo.svg';
+import routes from "../../config/routes";
 
 function Login(props) {
     const [email, setEmail] = React.useState("");
@@ -21,7 +25,9 @@ function Login(props) {
 
     return (
         <form className="form" onSubmit={handleSubmit}>
-          <h2 className="form__heading">Вход</h2>
+          <Link className="form__logo" to={routes.LANDING}><img src={logo} /></Link>
+          <h2 className="form__heading">Рады видеть!</h2>
+          
           <input
             className="form__input"
             onChange={handleEmailChange}

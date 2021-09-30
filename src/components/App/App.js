@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, useHistory } from 'react-router-dom';
 
 // мои роуты в приложении
 import routes from '../../config/routes';
@@ -18,7 +18,8 @@ import Portfolio from '../Portfolio/Portfolio';
 import Footer from '../Footer/Footer';
 
 import PopupMenu from '../PopupMenu/PopupMenu';
-
+import PageNotFound from '../PageNotFound/PageNotFound';
+import Profile from '../Profile/Profile';
 
 // добавить роут '/saved-movies' и '/profile'
 
@@ -36,12 +37,17 @@ function App() {
     setIsPopupMenuOpen(false);
   }
 
+  const history = useHistory();
+  function handleClickBack() {
+    history.goBack();
+  }
+
   return (
     <div className="App">
       <div className="page">
         <Switch>
           <Route exact path={routes.LANDING}>
-            <Header auth={false} promo={true} onModalButtonClick={handleModalButtonClick}/>
+            <Header auth={true} promo={true} onModalButtonClick={handleModalButtonClick}/>
             <Promo />
             <AboutProject />
             <Techs />
@@ -54,11 +60,18 @@ function App() {
             <Movies />
             <Footer />
           </Route>
+          <Route path={routes.PROFILE}>
+            <Header auth={true} promo={false} onModalButtonClick={handleModalButtonClick}/>
+            <Profile />
+          </Route>
           <Route path={routes.SIGN_IN}>
             <Login />
           </Route>
           <Route path={routes.SIGN_UP}>
             <Register />
+          </Route>
+          <Route path='*'>
+            <PageNotFound onBack={handleClickBack} />
           </Route>
         </Switch>
         <PopupMenu isOpen={isPopupMenuOpen} onClose={closePopupMenu} />

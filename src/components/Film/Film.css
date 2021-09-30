@@ -60,6 +60,8 @@
 
     font-size: 12px;
     cursor: pointer;
+
+    transition: all 0.2s ease-in;
 }
 
 .film__save-button::after {

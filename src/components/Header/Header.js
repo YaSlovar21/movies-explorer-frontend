@@ -35,7 +35,7 @@ function Header({auth, promo, onModalButtonClick}) {
                     </>
                 )   
                 :   ( 
-                    <Account accountPath="/profile" />
+                    <li className="header__menu-item header__link_private"><Account accountPath="/profile" /></li>
                 )}
                 </ul>
             </nav>
