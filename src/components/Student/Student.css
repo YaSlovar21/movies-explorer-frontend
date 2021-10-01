@@ -50,7 +50,34 @@
 }
 
 .student__link {
+    font-size: 14px;
+    font-weight: 500;
     text-decoration: none;
     color: #ffffff;
     margin-right: 20px;
+}
+
+@media screen and (max-width:768px) {
+    .student {
+        padding-top: 70px;
+    }
+    .student__content {
+        margin-top: 60px;
+    }
+    .student__name {
+        font-size: 30px;
+        margin-top: 40px;
+    }
+    .student__profession {
+        margin: 20px 0 20px;
+        font-weight: 500;
+        font-size: 11px;
+    }
+    .student__pitch {
+        font-size: 11px;
+    }
+    .student__links {
+        margin-top: 87px;
+    }
+
 }

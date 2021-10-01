@@ -69,8 +69,8 @@
 }
 
 .popup__button-close {
-    width: 36px;
-    height: 36px;
+    width: 31px;
+    height: 31px;
     background: transparent;
     background-image: url(../../images/close-icon.svg);
     background-size: cover;
@@ -79,16 +79,14 @@
     outline: none;
     border: none;
     cursor: pointer;
-    top: 37px;
-    right: 38px;
+    top: 22px;
+    right: 22px;
 }
 
 @media (max-width: 550px) {
     .popup__button-close {
-        top: 42px;
-        right: 10px;
-        width: 20px;
-        height: 20px;
+        top: 13px;
+        right: 13px;
     }
 }
 

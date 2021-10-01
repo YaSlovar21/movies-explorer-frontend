@@ -23,7 +23,7 @@
 .footer__column-copyright {
     font-style: normal;
     font-weight: normal;
-    font-size: 14px;
+    font-size: 13px;
     
     text-align: right;
     
@@ -45,10 +45,25 @@
 .footer__link {
     font-style: normal;
     font-weight: normal;
-    font-size: 16px;
+    font-size: 13px;
     line-height: 1.12;
     text-decoration: none;
     
     color: #FFFFFF;
     margin-right: 18px;
+}
+
+@media screen and (max-width: 768px) {
+    .footer__heading {
+        font-size: 12px;
+    }
+    .footer__content {
+        flex-direction: column-reverse;
+        align-items: center;
+        justify-content: flex-start;
+    }
+    .footer__column-links {
+        text-align: center;
+        flex-direction: column;
+    }
 }

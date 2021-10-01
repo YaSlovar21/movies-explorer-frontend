@@ -42,8 +42,18 @@
 }
 
 @media screen and (max-width: 768px) {
+    .tech {
+        background-color: transparent;
+        padding: 70px 0;
+    }
+    .tech__title {
+        font-size: 30px;
+    }
     .tech__description{
+        font-size: 11px;
         margin-bottom: 50px;
+        max-width: 292px;
+        
     }
     .tech__list {
         grid-template-columns: repeat(2, 1fr);

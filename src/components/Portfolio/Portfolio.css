@@ -3,6 +3,7 @@
 }
 
 .portfolio__title {
+    margin: 0;
     color: #8b8b8b;
     font-weight: normal;
     font-size: 18px;
@@ -34,8 +35,25 @@
     content: '';
     background-image: url(../../images/portfolio-link.svg);
     background-position: center;
+    background-size: 100%;
     background-repeat: no-repeat;
     width: 18px;
     height: 18px;
     position: relative;
+}
+
+@media screen and (max-width: 768px) {
+    .portfolio__link {
+        font-size: 18px;
+    }
+    .portfolio__link::after {
+        width: 11px;
+        height: 11px;
+    }
+    .portfolio__title {
+        font-size: 14px;
+    }
+    .portfolio__list {
+        margin-top: 40px;
+    }
 }
