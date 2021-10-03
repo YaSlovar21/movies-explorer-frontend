@@ -1,6 +1,6 @@
 import React from "react";
 import logo from '../../images/header-logo.svg';
-import { Link, useRouteMatch, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import routes from "../../config/routes";
 
@@ -9,12 +9,11 @@ import './Header.css';
 import Account from "../Account/Account";
 
 function Header({auth, promo, onModalButtonClick}) {
-    const { pathname } = useLocation();
     return (
     <header className={promo? "header" : "header header_dark"}>
         <div className="section-content header__content">
             <Link to={routes.LANDING} className="header__logo">
-                <img src={logo} className="logo" alt="Путешествия по России" />
+                <img src={logo} className="logo" alt="Кинопоиск" />
             </Link>
             <nav className="header__nav">
                 {auth && (
@@ -35,7 +34,7 @@ function Header({auth, promo, onModalButtonClick}) {
                     </>
                 )   
                 :   ( 
-                    <li className="header__menu-item header__link_private"><Account accountPath="/profile" /></li>
+                    <li className="header__menu-item header__link_private"><Account accountPath={routes.PROFILE} /></li>
                 )}
                 </ul>
             </nav>

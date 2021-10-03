@@ -16,7 +16,7 @@ function Film(props) {
                 <h2 className="film__name">{props.name}</h2>
                 <p className="film__duration">27 минут</p>
             </div>
-            <img className="film__poster" src={props.image} />
+            <img className="film__poster" src={props.image} alt={props.name} />
             <div className="film__footer">
                 <button className={saveButtonClassName} onClick={handleSaveClick}></button>
             </div>

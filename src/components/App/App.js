@@ -49,7 +49,7 @@ function App() {
       <div className="page">
         <Switch>
           <Route exact path={routes.LANDING}>
-            <Header auth={true} promo={true} onModalButtonClick={handleModalButtonClick}/>
+            <Header auth={false} promo={true} onModalButtonClick={handleModalButtonClick}/>
             <Promo />
             <AboutProject />
             <Techs />
