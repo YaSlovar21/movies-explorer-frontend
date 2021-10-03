@@ -5,6 +5,9 @@ https://yamovie.nomoredomains.monster/
 ### Публичный IP 
 178.154.225.230
 
+### Ссылка на макет
+https://www.figma.com/file/tpJIk2sDngkt9mqjUvNXGl/Diploma-Copy?node-id=891%3A3857
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
