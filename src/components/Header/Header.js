@@ -13,9 +13,9 @@ function Header({auth, promo, onModalButtonClick}) {
     return (
     <header className={promo? "header" : "header header_dark"}>
         <div className="section-content header__content">
-            <a className="header__logo" href="#">
+            <Link to={routes.LANDING} className="header__logo">
                 <img src={logo} className="logo" alt="Путешествия по России" />
-            </a>
+            </Link>
             <nav className="header__nav">
                 {auth && (
                     <ul className="header__menu header__menu_private">

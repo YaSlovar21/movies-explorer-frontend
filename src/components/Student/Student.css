@@ -64,6 +64,12 @@
     .student__content {
         margin-top: 60px;
     }
+
+    .student__photo {
+        flex-basis: 292px;
+        margin: 0 auto;
+        
+    }
     .student__name {
         font-size: 30px;
         margin-top: 40px;

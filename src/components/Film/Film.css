@@ -64,6 +64,7 @@
     transition: all 0.2s ease-in;
 }
 
+
 .film__save-button::after {
     content: 'Сохранить';
 }
@@ -75,6 +76,11 @@
 .film__save-button_active::after {
     content: '\002713';
 }
+
+.film__save-button_saved::after {
+    content: '\002717';
+}
+
 
 @media screen and (max-width: 768px) {
     .film__poster{

@@ -34,10 +34,19 @@
     list-style-type: none;
 }
 
-@media screen and (max-width: 768px) {
-    .cards {
+@media screen and (max-width: 1180px) {
+    .films {
         grid-template-columns: repeat(auto-fit, 342px);
         grid-template-rows: repeat(auto-fit, 309px);
         gap: 35px 24px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .films {
+        grid-template-columns: repeat(auto-fit, 300px);
+        grid-template-rows: repeat(auto-fit, 271px);
+        gap: 35px 24px;
+        
     }
 }

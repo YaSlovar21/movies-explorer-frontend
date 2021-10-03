@@ -7,6 +7,7 @@ import routes from '../../config/routes';
 import Header from '../Header/Header';
 
 import Movies from '../Movies/Movies';
+import SavedMovies from '../SavedMovies/SavedMovies';
 import Login from '../Login/Login';
 import Register from '../Register/Register';
 
@@ -24,6 +25,7 @@ import Profile from '../Profile/Profile';
 // добавить роут '/saved-movies' и '/profile'
 
 import './App.css';
+
 
 function App() {
 
@@ -58,6 +60,11 @@ function App() {
           <Route path={routes.MOVIES}>
             <Header auth={true} promo={false} onModalButtonClick={handleModalButtonClick}/>
             <Movies />
+            <Footer />
+          </Route>
+          <Route path={routes.SAVED_MOVIES}>
+            <Header auth={true} promo={false} onModalButtonClick={handleModalButtonClick}/>
+            <SavedMovies />
             <Footer />
           </Route>
           <Route path={routes.PROFILE}>

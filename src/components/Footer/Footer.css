@@ -27,7 +27,7 @@
     
     text-align: right;
     
-    color: #FFFFFF;
+    color: #8B8B8B;
     margin: 0;
     }
 
@@ -56,14 +56,27 @@
 @media screen and (max-width: 768px) {
     .footer__heading {
         font-size: 12px;
+        margin-bottom: 30px;
     }
     .footer__content {
         flex-direction: column-reverse;
         align-items: center;
-        justify-content: flex-start;
+        justify-content: center;
     }
     .footer__column-links {
-        text-align: center;
         flex-direction: column;
+        align-items: center;
     }
+    .footer__list-item {
+        font-size: 12px;
+        margin-bottom: 12px;
+    }
+    .footer__column-copyright {
+        font-size: 12px;
+        margin-top: 18px;
+    }
+    .footer__link {
+        margin-right: 0;
+    }
+
 }

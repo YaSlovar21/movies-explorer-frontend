@@ -51,7 +51,7 @@
     padding: 10px 20px;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 1180px) {
     .hero {
         padding: 140px 0 76px;
     }
@@ -77,6 +77,39 @@
         font-weight: normal;
     }
     .hero__subtitle {
+        text-align: center;
+        margin: 22px 0 92px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .hero {
+        padding: 70px 0 30px;
+    }
+
+    .hero__content {
+        flex-direction: column-reverse;
+        align-items: center;
+    }
+    .hero__image {
+        flex-basis: 210px;
+    }
+    .hero__text {
+        flex-basis: auto;
+        margin-top: 48px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .hero__title{
+        max-width: 680px;
+        text-align: center;
+        font-size: 30px;
+        font-weight: normal;
+        letter-spacing: -0.04em;
+    }
+    .hero__subtitle {
+        max-width: 260px;
         text-align: center;
         margin: 22px 0 92px;
     }
