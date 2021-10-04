@@ -1,0 +1,6 @@
+@import url(./vendor/normalize.css);
+@import url(./vendor/fonts/fonts.css);
+
+/* служебные блоки для миксинов */
+@import url(./blocks/section-content/section-content.css);
+@import url(./blocks/link-beauty/link-beauty.css);
