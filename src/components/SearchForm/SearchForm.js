@@ -15,7 +15,7 @@ function SearchForm() {
                         <button className="form-search__button">Поиск</button>
                     </div>
                     <div className="form-search__filter">
-                        <input className="form-search__checkbox" id="filter" type="checkbox" />
+                        <input className="form-search__checkbox" id="filter" type="checkbox" required />
                         <button className="form-search__filterbutton" type="button" onClick={handleClick}>
                             <div className="form-search__tumblr"></div>
                         </button>

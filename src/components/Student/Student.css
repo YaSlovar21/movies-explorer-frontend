@@ -7,11 +7,11 @@
     justify-content: space-between;
     margin-top: 66px;
 
-    flex-wrap: wrap-reverse;
 }
 
 .student__text {
     flex-basis: 600px;
+    flex-shrink: 0;
 }
 
 .student__photo {
@@ -57,22 +57,45 @@
     margin-right: 20px;
 }
 
-@media screen and (max-width:768px) {
+@media screen and (max-width: 1024px) {
+    .student__text {
+        flex-basis: 364px;
+    }
+    .student__name {
+        font-size: 30px;
+    }
+    .student__profession {
+        margin: 20px 0 20px;
+        font-weight: 500;
+        font-size: 11px;
+    }
+    .student__pitch {
+        font-size: 11px;
+    }
+    .student__photo {
+        flex-basis: 255px;
+        align-self: flex-start;
+    }
+}
+
+@media screen and (max-width: 680px) {
     .student {
         padding-top: 70px;
     }
     .student__content {
-        margin-top: 60px;
+        flex-direction: column-reverse;
+        max-width: 292px;
+        margin: 60px auto 0;
     }
 
     .student__photo {
-        flex-basis: 292px;
-        margin: 0 auto;
-        
+        margin-bottom: 40px;
+        align-self: stretch;
+        flex-basis: 100%;
     }
     .student__name {
         font-size: 30px;
-        margin-top: 40px;
+        
     }
     .student__profession {
         margin: 20px 0 20px;

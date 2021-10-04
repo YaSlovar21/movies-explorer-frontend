@@ -9,13 +9,13 @@ function Portfolio() {
             <h2 className="portfolio__title">Портфолио</h2>
             <ul className="portfolio__list">
                 <li className="portfolio__list-item">
-                    <a className="portfolio__link link-beauty" href="#" target="_blank">Статичный сайт</a>
+                    <a className="portfolio__link link-beauty" href="https://yaslovar21.github.io/how-to-learn" target="_blank">Статичный сайт</a>
                 </li>
                 <li className="portfolio__list-item">
-                    <a className="portfolio__link link-beauty" href="#" target="_blank">Адаптивный сайт</a>
+                    <a className="portfolio__link link-beauty" href="https://yaslovar21.github.io/russian-travel" target="_blank">Адаптивный сайт</a>
                 </li>
                 <li className="portfolio__list-item">
-                    <a className="portfolio__link link-beauty" href="#" target="_blank">Одностраничное приложение</a>
+                    <a className="portfolio__link link-beauty" href="https://yaslovar.students.nomoredomains.rocks" target="_blank">Одностраничное приложение</a>
                 </li>
             </ul>
         </div>
