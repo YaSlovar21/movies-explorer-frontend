@@ -5,7 +5,6 @@ import { Route, Switch, useHistory } from 'react-router-dom';
 import routes from '../../config/routes';
 
 import Header from '../Header/Header';
-
 import Movies from '../Movies/Movies';
 import SavedMovies from '../SavedMovies/SavedMovies';
 import Login from '../Login/Login';
@@ -22,14 +21,42 @@ import PopupMenu from '../PopupMenu/PopupMenu';
 import PageNotFound from '../PageNotFound/PageNotFound';
 import Profile from '../Profile/Profile';
 
-// добавить роут '/saved-movies' и '/profile'
-
 import './App.css';
 
+// контекст пользователя
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
+
+// мое api
+import { 
+  login, 
+  register, 
+  checkToken, 
+  logout, 
+  setInfoUser,
+
+  getSavedMovies, 
+  addMovie, 
+  deleteMovie 
+} from '../../utils/MainApi';
+
+// beat-film api
+import { getMovies } from '../../utils/MoviesApi';
+
+import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
+
+import react from 'react';
 
 function App() {
+  const history = useHistory();
+
+  const [currentUser, setCurrentUser] = React.useState({}); //стейт с информацией о текущем пользователе
+  const [loggedIn, setLoggedIn] = React.useState(false);
 
   const [isPopupMenuOpen, setIsPopupMenuOpen] = React.useState(false);
+
+  const [isLoadingMovies, setIsLoadingMovies] = React.useState(false);
+  const [movies, setMovies] = react.useState([]);
+  const [savedMovies, setSavedMovies] = react.useState([]);
 
   function handleModalButtonClick() {
     setIsPopupMenuOpen(true);
@@ -39,51 +66,178 @@ function App() {
     setIsPopupMenuOpen(false);
   }
 
-  const history = useHistory();
-  function handleClickBack() {
-    history.goBack();
+  function handleRegister(name, password, email) {
+    register(name, password, email)
+      .then((data) => {
+        // setIsSuccessRegistration(true);
+        // setIsInfoTooltipOpen(true);
+        history.push(routes.SIGN_IN);
+        console.log(data);
+      })
+      .catch((err) => {
+        // setIsSuccessRegistration(false);
+        // setIsInfoTooltipOpen(true);
+        console.log(err);
+      });
+  }
+
+  function handleLogin(email, password) {
+    login(email, password)
+      .then((res) => {
+        setLoggedIn(true);
+        
+        history.push(routes.MOVIES);
+        // setUserEmail(email);
+        console.log(res);
+      })
+      .catch((err) => {
+        // setIsSuccessRegistration(false);
+        // setIsInfoTooltipOpen(true);
+        console.log(err);
+      });
+  }
+
+  function handleSignOut() {
+    logout()
+      .then(() => {
+        history.push(routes.SIGN_IN);
+        setLoggedIn(false);
+      })
+      .catch(err => console.log(err));
+  }
+
+  React.useEffect(() => {
+    checkToken()
+      .then((res) => {
+        console.log(res);
+        setLoggedIn(true);
+        // setUserEmail(res.email); //данным способом мы выводили адрес на экран
+        history.push(routes.MOVIES);
+      })
+      .catch((err) => 
+        console.log(err)
+      );
+  }, []); 
+
+  function handleGetMovies() {
+    setIsLoadingMovies(true);
+    getMovies()
+      .then((movies) => {
+        setMovies(movies);
+      })
+      .catch((err)=> {
+        console.log(err);
+      })
+      .finally(() => {
+        setIsLoadingMovies(false);
+      })
+  }
+
+  function handleGetSavedMovies() {
+    setIsLoadingMovies(true);
+    getSavedMovies()
+      .then((saved) => {
+        setSavedMovies(saved);
+      })
+      .catch((err)=> {
+        console.log(err);
+      })
+      .finally(() => {
+        setIsLoadingMovies(false);
+      })
+  }
+
+  function handleFollowMovie(movie) {
+    addMovie(movie)
+      .then((newItem) => {
+        if (newItem) {
+          setSavedMovies((saved) => [...saved, newItem]);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  function handleUnfollowMovie(id) {
+    deleteMovie(id)
+      .then(() => {
+        setSavedMovies((savedMovies) => {
+          return savedMovies.filter((m) => m._id !== id);
+        });
+      })
+      .catch((err) => console.log(err));
+  }
+  
+  function handleUpdateUser(name, email) {
+    // обрабочик <EditProfilePopup.. onUpdateUser=... />   (Новые данные поднимаются из дочернего popupwithForm, где происходит сабмит)
+    // setIsFetching(true);
+    setInfoUser(name, email)
+      .then((userData) => {
+        setCurrentUser(userData);
+      })
+      .catch((err) => console.log(err))
+      .finally(()=> {
+        //setIsFetching(false);
+      });
   }
 
   return (
     <div className="App">
-      <div className="page">
-        <Switch>
-          <Route exact path={routes.LANDING}>
-            <Header auth={false} promo={true} onModalButtonClick={handleModalButtonClick}/>
-            <Promo />
-            <AboutProject />
-            <Techs />
-            <Student />
-            <Portfolio />
-            <Footer />
-          </Route>
-          <Route path={routes.MOVIES}>
-            <Header auth={true} promo={false} onModalButtonClick={handleModalButtonClick}/>
-            <Movies />
-            <Footer />
-          </Route>
-          <Route path={routes.SAVED_MOVIES}>
-            <Header auth={true} promo={false} onModalButtonClick={handleModalButtonClick}/>
-            <SavedMovies />
-            <Footer />
-          </Route>
-          <Route path={routes.PROFILE}>
-            <Header auth={true} promo={false} onModalButtonClick={handleModalButtonClick}/>
-            <Profile />
-          </Route>
-          <Route path={routes.SIGN_IN}>
-            <Login />
-          </Route>
-          <Route path={routes.SIGN_UP}>
-            <Register />
-          </Route>
-          <Route path='*'>
-            <PageNotFound onBack={handleClickBack} />
-          </Route>
-        </Switch>
-        <PopupMenu isOpen={isPopupMenuOpen} onClose={closePopupMenu} />
-      </div>
+      <CurrentUserContext.Provider value={currentUser}>
+        <div className="page">
+          <Switch>
+            <Route exact path={routes.LANDING}>
+              <Header auth={false} promo={true} onModalButtonClick={handleModalButtonClick}/>
+              <Promo />
+              <AboutProject />
+              <Techs />
+              <Student />
+              <Portfolio />
+              <Footer />
+            </Route>
+            <Route path={routes.MOVIES}>
+              <Header auth={true} promo={false} onModalButtonClick={handleModalButtonClick}/>
+              <ProtectedRoute 
+                path={routes.MOVIES}
+                component={Movies}
+              />
+              <Footer />
+            </Route>
+            <Route path={routes.SAVED_MOVIES}>
+              <Header auth={true} promo={false} onModalButtonClick={handleModalButtonClick}/>
+              <ProtectedRoute 
+                path={routes.SAVED_MOVIES}
+                component={SavedMovies}
+                savedMovies={savedMovies}
+                handleUnfollowMovie={handleUnfollowMovie}
+              />
+              <Footer />
+            </Route>
+            <Route path={routes.PROFILE}>
+              <Header auth={true} promo={false} onModalButtonClick={handleModalButtonClick}/>
+              <ProtectedRoute 
+                path={routes.PROFILE}
+                component={Profile}
+                handleUpdateUser={handleUpdateUser}
+                handleLogout={handleSignOut}
+              />
+            </Route>
+            <Route path={routes.SIGN_IN}>
+              <Login handleLogin={handleLogin} />
+            </Route>
+            <Route path={routes.SIGN_UP}>
+              <Register handleRegister={handleRegister} />
+            </Route>
+            <Route path='*'>
+              <PageNotFound />
+            </Route>
+          </Switch>
+          <PopupMenu isOpen={isPopupMenuOpen} onClose={closePopupMenu} />
+        </div>
+      </CurrentUserContext.Provider>
     </div>
+    
   );
 }
 

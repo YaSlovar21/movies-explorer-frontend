@@ -69,8 +69,6 @@ export const checkToken = () => {
   })
 }
 
-// Добавить API
-// addNewMovie
 
 export const getInfoUser = () => {
     return fetch(`${this._baseUrl}/users/me`, {
@@ -89,7 +87,7 @@ export const getInfoUser = () => {
     });
 }
 
-export const setInfoUser = (name, about) => {
+export const setInfoUser = (name, email) => {
     return fetch(`${this._baseUrl}/users/me`, {
         method: 'PATCH',
         headers: {
@@ -97,7 +95,7 @@ export const setInfoUser = (name, about) => {
           },
         body: JSON.stringify({
             name: name,
-            about: about,
+            email: email,
         }),
         credentials: 'include',
     })
