@@ -2,23 +2,31 @@ import React from 'react';
 
 import './Film.css';
 
+import { durationFormat } from '../../utils/durationFormat'
+
 function Film(props) {
 
     function handleSaveClick(evt) {
         evt.target.classList.toggle('film__save-button_active');
+        props.handleSaveFilm(props.film);
     }
-
+    function handleUnSaveClick(evt) {
+        props.handleUnSaveFilm(props.film._id);
+    }
     const saveButtonClassName = `film__save-button ${props.page==='saved' ? 'film__save-button_saved' : ''}`;
-
+    const duration = durationFormat(props.film.duration);
     return (
         <li className="film">
             <div className="film__header">
-                <h2 className="film__name">{props.name}</h2>
-                <p className="film__duration">27 минут</p>
+                <h2 className="film__name">{props.film.nameRU}</h2>
+                <p className="film__duration">{duration}</p>
             </div>
-            <img className="film__poster" src={props.image} alt={props.name} />
+            <img className="film__poster" src={props.film.image} alt={props.film.name} />
             <div className="film__footer">
-                <button className={saveButtonClassName} onClick={handleSaveClick}></button>
+                {props.page==='saved' 
+                    ? <button className={saveButtonClassName} onClick={handleUnSaveClick}></button>
+                    : <button className={saveButtonClassName} onClick={handleSaveClick}></button>
+                }
             </div>
         </li>
     );

@@ -1,21 +1,38 @@
-import React from "react";
+import React, { useContext } from "react";
 
 import './Profile.css';
 
+import { CurrentUserContext } from "../../contexts/CurrentUserContext";
+
 function Profile() {
+    
+    const currentUser = useContext(CurrentUserContext);
+
     return (
-        <form class="profile__form">
-            <h2 class="profile__heading">Привет, Виталий!</h2>
-            <div class="profile__input-item">
-                <label class="profile__label" for="name">Имя</label>
-                <input class="profile__input" type="text" name="name" id="name" readonly="" value="Виталий" />
+        <form className="profile__form">
+            <h2 className="profile__heading">Привет, {currentUser.name}</h2>
+            <div className="profile__input-item">
+                <label className="profile__label" for="name">Имя</label>
+                <input 
+                    className="profile__input" 
+                    type="text" 
+                    name="name" 
+                    id="name" 
+                    value={currentUser.name} 
+                />
             </div>
-            <div class="profile__input-item">
-                <label class="profile__label" for="email">Email</label>
-                <input class="profile__input" type="email" name="email" id="email" readonly="" value="pochta@yandex.ru" />
+            <div className="profile__input-item">
+                <label className="profile__label" for="email">Email</label>
+                <input 
+                    className="profile__input" 
+                    type="email" 
+                    name="email" 
+                    id="email" 
+
+                    value={currentUser.email} />
             </div>
-            <button class="profile__edit-button">Редактировать</button>
-            <button class="profile__logout">Выйти из аккаунта</button>
+            <button className="profile__edit-button">Редактировать</button>
+            <button className="profile__logout">Выйти из аккаунта</button>
         </form>
     );
 };

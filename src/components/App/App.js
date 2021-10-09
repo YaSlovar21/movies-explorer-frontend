@@ -36,11 +36,14 @@ import {
 
   getSavedMovies, 
   addMovie, 
-  deleteMovie 
+  deleteMovie, 
+  getInfoUser
 } from '../../utils/MainApi';
 
 // beat-film api
 import { getMovies } from '../../utils/MoviesApi';
+
+import moviesFormat from '../../utils/moviesFormat';
 
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 
@@ -50,7 +53,7 @@ function App() {
   const history = useHistory();
 
   const [currentUser, setCurrentUser] = React.useState({}); //стейт с информацией о текущем пользователе
-  const [loggedIn, setLoggedIn] = React.useState(false);
+  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
 
   const [isPopupMenuOpen, setIsPopupMenuOpen] = React.useState(false);
 
@@ -64,6 +67,16 @@ function App() {
 
   function closePopupMenu() {
     setIsPopupMenuOpen(false);
+  }
+
+  function handleGetUserInfo() {
+    getInfoUser()
+      .then((userData) => {
+        setCurrentUser(userData);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
   }
 
   function handleRegister(name, password, email) {
@@ -84,7 +97,7 @@ function App() {
   function handleLogin(email, password) {
     login(email, password)
       .then((res) => {
-        setLoggedIn(true);
+        setIsLoggedIn(true);
         
         history.push(routes.MOVIES);
         // setUserEmail(email);
@@ -101,7 +114,7 @@ function App() {
     logout()
       .then(() => {
         history.push(routes.SIGN_IN);
-        setLoggedIn(false);
+        setIsLoggedIn(false);
       })
       .catch(err => console.log(err));
   }
@@ -110,7 +123,7 @@ function App() {
     checkToken()
       .then((res) => {
         console.log(res);
-        setLoggedIn(true);
+        setIsLoggedIn(true);
         // setUserEmail(res.email); //данным способом мы выводили адрес на экран
         history.push(routes.MOVIES);
       })
@@ -119,11 +132,17 @@ function App() {
       );
   }, []); 
 
+  React.useEffect(() => {
+    handleGetMovies();
+    handleGetSavedMovies();
+    handleGetUserInfo();
+  }, [isLoggedIn]);
+
   function handleGetMovies() {
     setIsLoadingMovies(true);
     getMovies()
       .then((movies) => {
-        setMovies(movies);
+        setMovies(moviesFormat(movies));
       })
       .catch((err)=> {
         console.log(err);
@@ -138,6 +157,7 @@ function App() {
     getSavedMovies()
       .then((saved) => {
         setSavedMovies(saved);
+        console.log(saved);
       })
       .catch((err)=> {
         console.log(err);
@@ -188,7 +208,7 @@ function App() {
         <div className="page">
           <Switch>
             <Route exact path={routes.LANDING}>
-              <Header auth={false} promo={true} onModalButtonClick={handleModalButtonClick}/>
+              <Header auth={isLoggedIn} promo={true} onModalButtonClick={handleModalButtonClick}/>
               <Promo />
               <AboutProject />
               <Techs />
@@ -197,30 +217,37 @@ function App() {
               <Footer />
             </Route>
             <Route path={routes.MOVIES}>
-              <Header auth={true} promo={false} onModalButtonClick={handleModalButtonClick}/>
+              <Header auth={isLoggedIn} promo={false} onModalButtonClick={handleModalButtonClick}/>
               <ProtectedRoute 
+                isLoggedIn={isLoggedIn}
                 path={routes.MOVIES}
                 component={Movies}
+                cards={movies}
+                isLoadingMovies={isLoadingMovies}
+                handleSaveFilm={handleFollowMovie}
               />
               <Footer />
             </Route>
             <Route path={routes.SAVED_MOVIES}>
-              <Header auth={true} promo={false} onModalButtonClick={handleModalButtonClick}/>
+              <Header auth={isLoggedIn} promo={false} onModalButtonClick={handleModalButtonClick}/>
               <ProtectedRoute 
+                isLoggedIn={isLoggedIn}
                 path={routes.SAVED_MOVIES}
                 component={SavedMovies}
-                savedMovies={savedMovies}
-                handleUnfollowMovie={handleUnfollowMovie}
+                cards={savedMovies}
+                handleUnSaveFilm={handleUnfollowMovie}
               />
               <Footer />
             </Route>
             <Route path={routes.PROFILE}>
-              <Header auth={true} promo={false} onModalButtonClick={handleModalButtonClick}/>
+              <Header auth={isLoggedIn} promo={false} onModalButtonClick={handleModalButtonClick}/>
               <ProtectedRoute 
+                isLoggedIn={isLoggedIn}
                 path={routes.PROFILE}
                 component={Profile}
                 handleUpdateUser={handleUpdateUser}
                 handleLogout={handleSignOut}
+
               />
             </Route>
             <Route path={routes.SIGN_IN}>

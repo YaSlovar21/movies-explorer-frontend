@@ -2,14 +2,13 @@ import React from "react";
 
 import Cards from "../Cards/Cards";
 import SearchForm from '../SearchForm/SearchForm';
+import Preloader from "../Preloader/Preloader";
 
-import CARDS from './constants';
-
-function SavedMovies() {
+function SavedMovies({cards, isLoadingMovies, handleUnSaveFilm}) {
     return (
         <>
             <SearchForm />
-            <Cards cards={CARDS} page='saved' />
+            {isLoadingMovies ? <Preloader /> : <Cards cards={cards} page='saved' handleUnSaveFilm={handleUnSaveFilm} />}
         </>
     );
 }

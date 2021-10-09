@@ -1,4 +1,4 @@
-export const BASE_URL = 'https://api.yaslovar.students.nomoredomains.rocks';
+export const BASE_URL = 'https://api.yamovie.nomoredomains.monster';
 
 export const register = (name, password, email) => {
   return fetch(`${BASE_URL}/signup`, {
@@ -6,7 +6,7 @@ export const register = (name, password, email) => {
     headers: {
       'Content-Type': 'application/json'
     },
-    credentials: 'include',
+    //credentials: 'include',
     body: JSON.stringify({name, password, email})
   })
   .then((response) => {
@@ -71,7 +71,7 @@ export const checkToken = () => {
 
 
 export const getInfoUser = () => {
-    return fetch(`${this._baseUrl}/users/me`, {
+    return fetch(`${BASE_URL}/users/me`, {
         headers: {
             'Content-Type': 'application/json'
           },
@@ -88,7 +88,7 @@ export const getInfoUser = () => {
 }
 
 export const setInfoUser = (name, email) => {
-    return fetch(`${this._baseUrl}/users/me`, {
+    return fetch(`${BASE_URL}/users/me`, {
         method: 'PATCH',
         headers: {
             'Content-Type': 'application/json'
@@ -127,6 +127,7 @@ export const addMovie = ({
       headers: {
         'Content-Type': 'application/json'
       },
+      credentials: 'include',
       body: JSON.stringify({
         country: country,
         director: director,
@@ -154,6 +155,7 @@ export const getSavedMovies = () => {
       headers: {
         'Content-Type': 'application/json'
       },
+      credentials: 'include',
     }).then((response) => {
         if (response.ok) {
             console.log(response);
@@ -168,6 +170,8 @@ export const deleteMovie = (movieId) => {
       headers: {
         'Content-Type': 'application/json'
       },
+      credentials: 'include',
+
     }).then((response) => {
         if (response.ok) {
             console.log(response);

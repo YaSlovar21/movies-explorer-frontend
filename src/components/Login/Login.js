@@ -6,22 +6,20 @@ import './Login.css';
 import logo from '../../images/header-logo.svg';
 import routes from "../../config/routes";
 
-function Login(props) {
-    const [email, setEmail] = React.useState("");
-    const [password, setPassword] = React.useState("");
-  
-    function handleEmailChange(evt) {
-      setEmail(evt.target.value);
-    }
+import useFormWithValidation from "../../utils/useFormWithValidation";
 
-    function handlePassChange(evt) {
-      setPassword(evt.target.value);
-    }
+function Login({ handleLogin }) {
 
-    function handleSubmit(evt) {
+  const formWithValidation = useFormWithValidation();
+  const { handleChange, errors, isValid } = formWithValidation;
+
+  const { email, password } = formWithValidation.values;
+  function handleSubmit(evt) {
         evt.preventDefault();
-        // props.handleLogin(email, password);
-    }
+        handleLogin(email, password);
+        formWithValidation.resetForm();
+        
+  }
 
     return (
         <form className="form" onSubmit={handleSubmit}>
@@ -29,22 +27,27 @@ function Login(props) {
           <h2 className="form__heading">Рады видеть!</h2>
           
           <input
+            name="email"
             className="form__input"
-            onChange={handleEmailChange}
+            onChange={handleChange}
             type="email"
-            placeholder="E-mail"
+            placeholder="Ваш e-mail"
             required
           />
+          <span className="form__span-error">{errors.email}</span>
           <input 
+            name="password"
             className="form__input"
-            onChange={handlePassChange}
+            onChange={handleChange}
             type="password"
-            placeholder="Password"
+            placeholder="Введите пароль"
             required
           />
+          <span className="form__span-error">{errors.password}</span>
           <button 
             type="submit" 
-            className="form__submit"
+            disabled={!isValid}
+            className={`form__submit ${!isValid ? 'form__submit_disabled' : ''}`}
           >
             Войти    
           </button>

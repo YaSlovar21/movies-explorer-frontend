@@ -50,6 +50,16 @@
 
     background: none;
     border: 0;
+    
+}
+.profile__input:focus {
+    border: none;
+    border-bottom: 1px solid white;
+    outline: none;
+}
+.profile__input:focus-visible {
+    border: none;
+    border-bottom: 1px solid white;
 }
 
 .profile__edit-button {

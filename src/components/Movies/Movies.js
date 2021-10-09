@@ -1,17 +1,18 @@
 import React from "react";
 
 import Cards from "../Cards/Cards";
+import Preloader from "../Preloader/Preloader";
 import SearchForm from '../SearchForm/SearchForm';
 
-import CARDS from './constants';
+//import CARDS from './constants';
 
-function Movies() {
+function Movies({cards, isLoadingMovies, handleSaveFilm}) {
     return (
         <>
             <SearchForm />
-            <Cards cards={CARDS} />
+            {isLoadingMovies ? <Preloader /> : <Cards cards={cards} handleSaveFilm={handleSaveFilm} />}
         </>
-    );
+    ); 
 }
 
 export default Movies;

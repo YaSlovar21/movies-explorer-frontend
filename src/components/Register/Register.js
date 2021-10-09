@@ -7,55 +7,61 @@ import logo from '../../images/header-logo.svg';
 
 import Form from "../Form/Form";
 
-function Register(props) {
-  //props.handleRegister - обработчик с APP
-  //управляемые поля
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
+import useFormWithValidation  from "../../utils/useFormWithValidation";
 
-  function handleEmailChange(evt) {
-    setEmail(evt.target.value);
-  }
-  function handlePassChange(evt) {
-    setPassword(evt.target.value);
-  }
 
+function Register({handleRegister}) {
+
+  const formWithValidation = useFormWithValidation();
+  const { handleChange, errors, isValid } = formWithValidation;
+
+  const { name, email, password } = formWithValidation.values;
   function handleSubmit(evt) {
-    evt.preventDefault();
-    props.handleRegister(password, email);
+        evt.preventDefault();
+        console.log(JSON.stringify({name, password, email}));
+        handleRegister(name, password, email);
+        formWithValidation.resetForm();
   }
-
   return (
-    <Form>
+    <Form onSubmit={handleSubmit}>
       <Link className="form__logo" to={routes.LANDING}><img src={logo} /></Link>
       <h2 className="form__heading">Добро пожаловать!</h2>
       <label className="form__label">Имя</label>
       <input
+        name="name"
         className="form__input"
-        onChange={handleEmailChange}
+        onChange={handleChange}
         type="text"
         placeholder="Как Вас зовут?"
+        minLength="2"
         required
       />
+      <span className="form__span-error">{errors.name}</span>
       <label className="form__label">E-mail</label>
       <input 
+        name="email"
         className="form__input"
-        onChange={handlePassChange}
-        type="e-mail"
+        onChange={handleChange}
+        type="email"
         placeholder="Введите адрес почты"
         required
       />
+      <span className="form__span-error">{errors.email}</span>
       <label className="form__label">Пароль</label>
       <input 
+        name="password"
         className="form__input form__input_password"
-        onChange={handlePassChange}
+        onChange={handleChange}
         type="password"
         placeholder="Введите пароль"
+        minLength="8"
         required
       />
+      <span className="form__span-error">{errors.password}</span>
       <button 
-        type="submit" 
-        className="form__submit"
+        type="submit"
+        disabled={!isValid}
+        className={`form__submit ${!isValid ? 'form__submit_disabled' : ''}`}
       >
         Зарегистрироваться    
       </button>
