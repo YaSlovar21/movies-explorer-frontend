@@ -245,7 +245,7 @@ function App() {
                 isLoggedIn={isLoggedIn}
                 path={routes.PROFILE}
                 component={Profile}
-                handleUpdateUser={handleUpdateUser}
+                handleProfileUpdate={handleUpdateUser}
                 handleLogout={handleSignOut}
 
               />

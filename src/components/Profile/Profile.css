@@ -22,7 +22,7 @@
     display: flex;
     justify-content: space-between;
     align-self: stretch;
-    padding: 17px 0;
+    padding: 10px 0;
   }
   
 .profile__input-item:first-of-type{
@@ -44,6 +44,7 @@
     font-size: 11px;
     line-height: 13px;
     /* identical to box height */
+    padding: 7px 0;
 
     text-align: right;
     color: #FFFFFF;
@@ -54,13 +55,10 @@
 }
 .profile__input:focus {
     border: none;
-    border-bottom: 1px solid white;
+    border-bottom: 1px solid #2f2f2f;
     outline: none;
 }
-.profile__input:focus-visible {
-    border: none;
-    border-bottom: 1px solid white;
-}
+
 
 .profile__edit-button {
     background: none;
@@ -79,6 +77,18 @@
     margin-top: 204px;
 
     color: #FFFFFF;
+}
+
+.profile__edit-button_disabled {
+    color: #2f2f2f;
+    cursor: not-allowed;
+}
+
+.profile__span-error {
+    width: 100%;
+    text-align: right;
+    font-size: 10px;
+    color: #EE3465;
 }
 
 .profile__logout {

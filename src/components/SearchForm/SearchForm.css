@@ -17,6 +17,10 @@
     justify-content: space-between;
 }
 
+.form-search__line_active {
+    border: 1.5px solid #3ddc8593;
+}
+
 .form-search__input {
     background: none;
     border: none;
@@ -26,10 +30,6 @@
     width: 100%;
 
     box-sizing: border-box;
-}
-
-.form-search__input:focus {
-    border-bottom: 1px solid #2f2f2f;
 }
 
 .form-search__button {
