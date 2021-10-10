@@ -43,7 +43,7 @@ function Cards({ cards , page, handleSaveFilm, handleUnSaveFilm, checkIsSavedFil
             return (<div className="cards__notfound">Ничего не найдено...</div>);
         }
     }
-    const countToRender = initCardsCount + moreCardsCount;
+    const countToRender = initCardsCount;
     return (
         <section class="cards section-content section-content_films">
             <ul class="films">

@@ -114,8 +114,12 @@ function App() {
   function handleSignOut() {
     logout()
       .then(() => {
+
         history.push(routes.SIGN_IN);
         setIsLoggedIn(false);
+        setCurrentUser({});
+        setMovies([]);
+        setSavedMovies([]);
       })
       .catch(err => console.log(err));
   }

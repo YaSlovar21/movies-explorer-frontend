@@ -5,7 +5,7 @@ import './Profile.css';
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import useFormWithValidation  from "../../utils/useFormWithValidation";
 
-function Profile({ handleProfileUpdate }) {
+function Profile({ handleProfileUpdate, handleLogout }) {
     
     const currentUser = useContext(CurrentUserContext);
     const formWithValidation = useFormWithValidation();
@@ -41,6 +41,7 @@ function Profile({ handleProfileUpdate }) {
                     onChange={handleChange} 
                     type="email" 
                     name="email"
+                    pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
                     value={email}
                     minLength="2"
                     maxLength="30"
@@ -49,7 +50,7 @@ function Profile({ handleProfileUpdate }) {
             <span className="profile__span-error">{errors.email}</span>
 
             <button className={`profile__edit-button ${!isValid ? 'profile__edit-button_disabled' : ''}`} disabled={!isValid}>Редактировать</button>
-            <button className="profile__logout">Выйти из аккаунта</button>
+            <button className="profile__logout" onClick={handleLogout}>Выйти из аккаунта</button>
         </form>
     );
 };

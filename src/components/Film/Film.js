@@ -19,8 +19,12 @@ function Film(props) {
     const saveButtonClassName = `film__save-button ${type==='saved' ? 'film__save-button_saved' : ''}`;
     const duration = durationFormat(props.film.duration);
 
+    function handleFilmClick() {
+        window.open(props.film.trailer);
+    }
+
     return (
-        <li className="film">
+        <li className="film" onClick={handleFilmClick}>
             <div className="film__header">
                 <h2 className="film__name">{props.film.nameRU}</h2>
                 <p className="film__duration">{duration}</p>

@@ -41,6 +41,7 @@ function Register({handleRegister}) {
       <input 
         name="email"
         className="form__input"
+        pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
         onChange={handleChange}
         type="email"
         placeholder="Введите адрес почты"

@@ -12,7 +12,7 @@ function PopupMenu(props) {
                 <button className="popup__button-close" onClick={props.onClose}></button>
                 <nav className="popup__menu">
                     <Link to={routes.LANDING} className="popup__navlink" onClick={props.onClose}>Главная</Link>
-                    <Link to={routes.MOVIES} className="popup__navlink popup__navlink_active" onClick={props.onClose}>Фильмы</Link>
+                    <Link to={routes.MOVIES} className="popup__navlink" onClick={props.onClose}>Фильмы</Link>
                     <Link to={routes.SAVED_MOVIES} className="popup__navlink" onClick={props.onClose}>Сохраненные фильмы</Link>
                 </nav>
                 <Link to={routes.PROFILE} className="auth" onClick={props.onClose}>Аккаунт</Link>
