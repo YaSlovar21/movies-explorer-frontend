@@ -24,12 +24,12 @@ function Film(props) {
     }
 
     return (
-        <li className="film" onClick={handleFilmClick}>
+        <li className="film">
             <div className="film__header">
                 <h2 className="film__name">{props.film.nameRU}</h2>
                 <p className="film__duration">{duration}</p>
             </div>
-            <img className="film__poster" src={props.film.image} alt={props.film.name} />
+            <img className="film__poster" src={props.film.image} alt={props.film.name} onClick={handleFilmClick} />
             <div className="film__footer">
                 {type==='saved' 
                     ? <button className={saveButtonClassName} onClick={handleUnSaveClick}></button>
