@@ -7,7 +7,9 @@ import Preloader from "../Preloader/Preloader";
 import MovieSearch from "../../utils/MovieSearch";
 
 function SavedMovies({cards, isLoadingMovies, handleUnSaveFilm}) {
-
+    React.useEffect(()=> {
+        setSearched(cards);
+    },[cards])
     const [searched, setSearched] = React.useState(cards);
 
     function onSearch(request, isShortChecked) {
