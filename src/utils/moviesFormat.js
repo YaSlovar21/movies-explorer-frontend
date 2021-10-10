@@ -12,7 +12,7 @@ function moviesFormat(movies) {
             "thumbnail": `https://api.nomoreparties.co${item.image.formats.thumbnail.url}`,
             "movieId": item.id,
             "nameRU": item.nameRU,
-            "nameEN": item.nameEN
+            "nameEN": item.nameEN ? item.nameEN : '',
         }
         return movie;
     })

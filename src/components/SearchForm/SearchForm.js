@@ -21,16 +21,14 @@ function SearchForm({ handleSearch }) {
         setRequest(evt.target.value);
     }
 
-    function handleTumblrChange(evt) {
-        setIsShortChecked(!isShortChecked);
-    }
-
     function handleSubmit(evt) {
         evt.preventDefault();
         if (request === '') {
-            setIsEmpty('Введите запрос...')
+            setIsEmpty('Введите запрос для поиска фильмов...')
+            handleSearch(request, isShortChecked);
         } else {
             setIsEmpty('');
+            console.log(request);
             handleSearch(request, isShortChecked);
         }
     }
@@ -50,7 +48,7 @@ function SearchForm({ handleSearch }) {
                         />
                         <button className="form-search__button">Поиск</button>
                     </div>
-                    <span class="form-search__error">{isEmpty}</span>
+                    <span class="form-search__hint">{isEmpty}</span>
                     <div className="form-search__filter">
                         <input className="form-search__checkbox" id="filter" checked={isShortChecked} type="checkbox"/>
                         <button className="form-search__filterbutton" type="button" onClick={handleClick}>

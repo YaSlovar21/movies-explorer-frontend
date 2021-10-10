@@ -1,6 +1,6 @@
 function MovieSearch(movies, req, isShortChecked) {
     const result = movies.filter((movie)=> {
-        if (isShortChecked && movie.duration > 60) {
+        if (isShortChecked && movie.duration > 40) {
             return false;
         }
         if (movie.nameRU.toLowerCase().match(req.toLowerCase())) {

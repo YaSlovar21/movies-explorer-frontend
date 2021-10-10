@@ -96,6 +96,13 @@
     color: #ffffff;
 }
 
+.form-search__hint {
+    color: #3DDC84;
+    font-size: 10px;
+    font-weight: 500;
+    margin: 10px 0 0;
+    display: block;
+}
 
 @media screen and (max-width: 768px) {
     .form-search__line {

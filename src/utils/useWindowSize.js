@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 // хук возвращает ширину экрана через пол секунды
 // таким образом в компоненте, где он монитируется знаем ширину экрана
 
-export const useWindowResize = () => {
+export default function useWindowResize() {
 
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 

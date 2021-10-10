@@ -48,6 +48,7 @@ import moviesFormat from '../../utils/moviesFormat';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 
 import react from 'react';
+import { findByLabelText } from '@testing-library/dom';
 
 function App() {
   const history = useHistory();
@@ -167,6 +168,15 @@ function App() {
       })
   }
 
+
+  function checkIsSavedFilm(movie) {
+    return savedMovies.some((savedFilm) => savedFilm.movieId === movie.movieId)
+  }
+
+  function getSavedVersionToDelete(movie) {
+    return savedMovies.find((savedFilm) => savedFilm.movieId === movie.movieId)
+  }
+
   function handleFollowMovie(movie) {
     addMovie(movie)
       .then((newItem) => {
@@ -179,7 +189,9 @@ function App() {
       });
   };
 
-  function handleUnfollowMovie(id) {
+  function handleUnfollowMovie(film) {
+    const id = !film._id ? getSavedVersionToDelete(film)._id : film._id;
+    console.log(getSavedVersionToDelete(film));
     deleteMovie(id)
       .then(() => {
         setSavedMovies((savedMovies) => {
@@ -225,6 +237,9 @@ function App() {
                 cards={movies}
                 isLoadingMovies={isLoadingMovies}
                 handleSaveFilm={handleFollowMovie}
+
+                checkIsSavedFilm={checkIsSavedFilm}
+                handleUnSaveFilm={handleUnfollowMovie}
               />
               <Footer />
             </Route>
