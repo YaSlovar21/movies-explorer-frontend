@@ -4,8 +4,10 @@ import './Profile.css';
 
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import useFormWithValidation  from "../../utils/useFormWithValidation";
+import Footer from "../Footer/Footer";
+import Header from "../Header/Header";
 
-function Profile({ handleProfileUpdate, handleLogout }) {
+function Profile({ handleProfileUpdate, handleLogout, handleModalButtonClick, isLoggedIn }) {
     
     const currentUser = useContext(CurrentUserContext);
     const formWithValidation = useFormWithValidation();
@@ -21,6 +23,8 @@ function Profile({ handleProfileUpdate, handleLogout }) {
         formWithValidation.resetForm();
     }
     return (
+        <>
+        <Header auth={isLoggedIn} promo={false} onModalButtonClick={handleModalButtonClick}/>
         <form className="profile__form" onSubmit={handleSubmit}>
             <h2 className="profile__heading">Привет, {currentUser.name}!</h2>
             <div className="profile__input-item">
@@ -54,6 +58,8 @@ function Profile({ handleProfileUpdate, handleLogout }) {
             <button className={`profile__edit-button ${(!isValid || isNotChanged) ? 'profile__edit-button_disabled' : ''}`} disabled={!isValid || isNotChanged}>Редактировать</button>
             <button className="profile__logout" onClick={handleLogout}>Выйти из аккаунта</button>
         </form>
+        <Footer />
+        </>
     );
 };
 

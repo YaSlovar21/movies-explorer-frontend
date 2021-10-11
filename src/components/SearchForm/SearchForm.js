@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import './SearchForm.css';
 
-function SearchForm({ handleSearch, onToggle }) {
+function SearchForm({handleSearch, onToggle }) {
    
     const [request, setRequest] = React.useState('');
     const [isEmpty, setIsEmpty] = React.useState('');

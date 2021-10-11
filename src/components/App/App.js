@@ -20,7 +20,7 @@ import Footer from '../Footer/Footer';
 import PopupMenu from '../PopupMenu/PopupMenu';
 import PageNotFound from '../PageNotFound/PageNotFound';
 import Profile from '../Profile/Profile';
-
+import InfoTooltip from '../InfoTooltip/InfoTooltip';
 import './App.css';
 
 // контекст пользователя
@@ -54,15 +54,18 @@ function App() {
   const history = useHistory();
 
   const [currentUser, setCurrentUser] = React.useState({}); //стейт с информацией о текущем пользователе
-  const [isLoggedIn, setIsLoggedIn] = React.useState(localStorage.getItem("isLoggedIn") ?? false);
+  const [isLoggedIn, setIsLoggedIn] = React.useState(true);
 
   const [isPopupMenuOpen, setIsPopupMenuOpen] = React.useState(false);
+  const [isInfoPopupOpen, setIsInfoPopupOpen] = React.useState(false);
+  const [isSuccess, setIsSuccess] = React.useState(false);
 
   const [isLoadingMovies, setIsLoadingMovies] = React.useState(false);
   const [movies, setMovies] = react.useState([]);
   const [savedMovies, setSavedMovies] = react.useState([]);
 
   const [isTokenCheking, setIsTokenCheking] = React.useState(false);
+
 
   function handleModalButtonClick() {
     setIsPopupMenuOpen(true);
@@ -73,13 +76,18 @@ function App() {
   }
 
   function handleGetUserInfo() {
-    getInfoUser()
-      .then((userData) => {
-        setCurrentUser(userData);
-      })
-      .catch((err) => {
-        console.log(err);
-      })
+    if (!localStorage.getItem('currentUser')) {
+      getInfoUser()
+        .then((userData) => {
+          setCurrentUser(userData);
+          localStorage.setItem('currentUser',JSON.stringify(userData))
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+    } else {
+      setCurrentUser(JSON.parse(localStorage.getItem('currentUser')));
+    }
   }
 
   function handleRegister(name, password, email) {
@@ -87,8 +95,10 @@ function App() {
       .then((data) => {
         // setIsSuccessRegistration(true);
         // setIsInfoTooltipOpen(true);
-        history.push(routes.SIGN_IN);
+        //history.push(routes.SIGN_IN);
         console.log(data);
+        login(email, password);
+        //history.push(routes.MOVIES);
       })
       .catch((err) => {
         // setIsSuccessRegistration(false);
@@ -101,7 +111,6 @@ function App() {
     login(email, password)
       .then((res) => {
         setIsLoggedIn(true);
-        
         history.push(routes.MOVIES);
         // setUserEmail(email);
         console.log(res);
@@ -114,12 +123,13 @@ function App() {
   function handleSignOut() {
     logout()
       .then(() => {
-
         history.push(routes.SIGN_IN);
         setIsLoggedIn(false);
         setCurrentUser({});
         setMovies([]);
         setSavedMovies([]);
+        localStorage.clear();
+        history.push('/');
       })
       .catch(err => console.log(err));
   }
@@ -131,15 +141,14 @@ function App() {
     .then((res) => {
       console.log(res);
       setIsLoggedIn(true);
-      console.log('ПРОВЕРКА ТОКЕНА')
-      localStorage.setItem('isLoggedIn', true);
+      //localStorage.setItem('isLoggedIn', true);
       // setUserEmail(res.email); //данным способом мы выводили адрес на экран
       // history.push(routes.MOVIES);
     })
     .catch((err) => {
       console.log(err);
       setIsLoggedIn(false);
-      localStorage.setItem('isLoggedIn', false);
+      //localStorage.setItem('isLoggedIn', false);
     }
     )
     .finally(()=> {
@@ -155,11 +164,14 @@ function App() {
     // handleGetMovies();
     handleGetSavedMovies();
     handleGetUserInfo();
-  }, [isLoggedIn]);
+    
+    //console.log(localStorage.getItem('reqHash'));
+    //setInitMovies(JSON.parse(localStorage.getItem('reqHash')));
+    //setInitToggle(Boolean(localStorage.getItem('toggleState')));
+  }, []);
 
-  function cleanLocalStorage() {
-    localStorage.clear();
-  }
+  
+ 
   function handleGetMovies() {
     setIsLoadingMovies(true);
     getMovies()
@@ -183,6 +195,7 @@ function App() {
     getSavedMovies()
       .then((saved) => {
         setSavedMovies(saved);
+        //localStorage.setItem("savedMovies", JSON.stringify(saved));
         console.log(saved);
       })
       .catch((err)=> {
@@ -192,7 +205,6 @@ function App() {
         setIsLoadingMovies(false);
       })
   }
-
 
   function checkIsSavedFilm(movie) {
     return savedMovies.some((savedFilm) => savedFilm.movieId === movie.movieId)
@@ -222,7 +234,8 @@ function App() {
       .then(() => {
         setSavedMovies((savedMovies) => {
           return savedMovies.filter((m) => m._id !== id);
-        });
+        })
+        
       })
       .catch((err) => console.log(err));
   }
@@ -231,19 +244,23 @@ function App() {
     setInfoUser(name, email)
       .then((userData) => {
         setCurrentUser(userData);
+        setIsSuccess(true);
+        setIsInfoPopupOpen(true);
       })
-      .catch((err) => console.log(err))
+      .catch((err) => {
+        console.log(err);
+        setIsSuccess(false);
+        setIsInfoPopupOpen(true);
+      })
       .finally(()=> {
-        // setIsFetching(false);
-        //
-        // Добавить уведомление об успешном изменении данных
-        //
+  
       });
   }
-// <Route path={routes.MOVIES}>
-//<Header auth={isLoggedIn} promo={false} onModalButtonClick={handleModalButtonClick}/>
-//<Footer />
-//</Route>
+
+  function closeInfoPopup(){
+    setIsInfoPopupOpen(false);
+  }
+  
   return (
     <div className="App">
       <CurrentUserContext.Provider value={currentUser}>
@@ -265,38 +282,35 @@ function App() {
                 isLoggedIn={isLoggedIn}
                 path={routes.MOVIES}
                 component={Movies}
-                // cards={movies}
+
                 isLoadingMovies={isLoadingMovies}
                 handleSaveFilm={handleFollowMovie}
 
                 checkIsSavedFilm={checkIsSavedFilm}
                 handleUnSaveFilm={handleUnfollowMovie}
 
+                handleModalButtonClick={handleModalButtonClick}
                 handleGetMovies={handleGetMovies}
               />
-           
-            <Route path={routes.SAVED_MOVIES}>
-              <Header auth={isLoggedIn} promo={false} onModalButtonClick={handleModalButtonClick}/>
+
               <ProtectedRoute 
                 isLoggedIn={isLoggedIn}
                 path={routes.SAVED_MOVIES}
                 component={SavedMovies}
                 cards={savedMovies}
                 handleUnSaveFilm={handleUnfollowMovie}
+                handleModalButtonClick={handleModalButtonClick}
               />
-              <Footer />
-            </Route>
-            <Route path={routes.PROFILE}>
-              <Header auth={isLoggedIn} promo={false} onModalButtonClick={handleModalButtonClick}/>
+              
               <ProtectedRoute 
                 isLoggedIn={isLoggedIn}
                 path={routes.PROFILE}
                 component={Profile}
                 handleProfileUpdate={handleUpdateUser}
                 handleLogout={handleSignOut}
-
+                handleModalButtonClick={handleModalButtonClick}
               />
-            </Route>
+
             <Route path={routes.SIGN_IN}>
               <Login handleLogin={handleLogin} />
             </Route>
@@ -309,6 +323,13 @@ function App() {
           </Switch>
           }
           <PopupMenu isOpen={isPopupMenuOpen} onClose={closePopupMenu} />
+          <InfoTooltip
+            success={isSuccess}
+            isOpen={isInfoPopupOpen}
+            onClose={closeInfoPopup}
+            successText="Успешно!"
+            errorText="Что-то пошло не так! Попробуйте ещё раз."
+          />
         </div>
       </CurrentUserContext.Provider>
     </div>

@@ -8,6 +8,9 @@ import Preloader from "../Preloader/Preloader";
 import useWindowResize from '../../utils/useWindowSize';
 
 function Cards({ cards , page, handleSaveFilm, handleUnSaveFilm, checkIsSavedFilm, handleInitCards, isLoadingCards }) {
+    
+    //localStorage.setItem('searchedFilms', JSON.stringify(cards));
+    
 
     const windowWidth = useWindowResize();
     const [initCardsCount, setInitCardsCount] = useState(12);
@@ -39,8 +42,9 @@ function Cards({ cards , page, handleSaveFilm, handleUnSaveFilm, checkIsSavedFil
     if (isLoadingCards) {
         return (<Preloader />);
     } else {
-        if ((!cards || cards.length===0)) {
-            return (<div className="cards__notfound">Ничего не найдено...</div>);
+        if (!cards || cards.length===0) {
+            console.log(typeof(cards));
+            return (<div className="cards__notfound">Пока ничего не найдено...</div>);
         }
     }
     const countToRender = initCardsCount;

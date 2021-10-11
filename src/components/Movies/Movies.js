@@ -1,24 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 
 import Cards from "../Cards/Cards";
-import Preloader from "../Preloader/Preloader";
 import SearchForm from '../SearchForm/SearchForm';
+import Header from "../Header/Header";
+import Footer from "../Footer/Footer";
 
 import MovieSearch from "../../utils/MovieSearch";
-import MovieFilter from "../../utils/MovieFilter";
 import moviesFormat from '../../utils/moviesFormat';
 
 import { getMovies } from '../../utils/MoviesApi';
-//import CARDS from './constants';
 
-function Movies({handleGetMovies, isLoadingMovies, handleSaveFilm, checkIsSavedFilm, handleUnSaveFilm}) {
+import {useLocalStorageList} from '../../utils/useLocalState'
 
-    const [searched, setSearched] = React.useState([]);
 
-    const [request, setRequest] = React.useState(''); // кэшируем реквест из сабмита формы
-
+function Movies({handleModalButtonClick, isLoggedIn, handleSaveFilm, checkIsSavedFilm, handleUnSaveFilm}) {
+    
     const [isLoading, setIsLoading] = React.useState(false);
-    const [isShortChecked, setIsShortChecked] = React.useState(false);
+    
+    const [request, setRequest] = React.useState(''); // кэшируем реквест из сабмита формы
+    const [searched, setSearched] = React.useState([]);
+    const [isShortChecked, setIsShortChecked] = React.useState();
+    //const [count, setCount] = useState(initialState);
+    const [result, setResult] = useState(null);
+
 
     function onSearch(req) {
         if (!localStorage.getItem('movies')) {
@@ -38,8 +42,9 @@ function Movies({handleGetMovies, isLoadingMovies, handleSaveFilm, checkIsSavedF
                     setSearched(MovieSearch(cards, req, 0));
                 })
         } else {
-            const cards = JSON.parse(localStorage.getItem("movies"));     
-            setSearched(MovieSearch(cards, req, 0)); 
+            const cards = JSON.parse(localStorage.getItem("movies")); 
+            const searchedCards = MovieSearch(cards, req, 0);
+            setSearched(searchedCards); 
         }
         setRequest(req);
     }
@@ -48,11 +53,20 @@ function Movies({handleGetMovies, isLoadingMovies, handleSaveFilm, checkIsSavedF
         setIsShortChecked((prev) => !prev);
     }
 
-    const result = isShortChecked ? searched.filter((item) => item.duration < 41 ) : searched;
+    React.useEffect(()=> {
+        const cards = isShortChecked ? searched.filter((item) => item.duration < 41 ) : searched;
+        setResult(cards);
+    }, [searched, isShortChecked]);
+
 
     return (
         <>
-            <SearchForm handleSearch={onSearch} onToggle={toggleShort} />
+            <Header auth={isLoggedIn} promo={false} onModalButtonClick={handleModalButtonClick}/>
+            <SearchForm 
+                handleSearch={onSearch} 
+                onToggle={toggleShort} 
+                // начальные значения
+            />
             <Cards 
                 cards={result} 
                 handleSaveFilm={handleSaveFilm} 
@@ -61,6 +75,7 @@ function Movies({handleGetMovies, isLoadingMovies, handleSaveFilm, checkIsSavedF
                 page='mainsearch'
                 isLoadingCards={isLoading}
             />
+            <Footer />
             
         </>
     ); 

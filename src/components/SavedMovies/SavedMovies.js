@@ -5,8 +5,9 @@ import SearchForm from '../SearchForm/SearchForm';
 import Preloader from "../Preloader/Preloader";
 
 import MovieSearch from "../../utils/MovieSearch";
-
-function SavedMovies({cards, isLoadingMovies, handleUnSaveFilm}) {
+import Footer from "../Footer/Footer";
+import Header from "../Header/Header";
+function SavedMovies({cards, isLoadingMovies, handleUnSaveFilm, handleModalButtonClick, isLoggedIn}) {
     
     React.useEffect(()=> {
         setSearched(cards);
@@ -27,11 +28,13 @@ function SavedMovies({cards, isLoadingMovies, handleUnSaveFilm}) {
     
     return (
         <>
+            <Header auth={isLoggedIn} promo={false} onModalButtonClick={handleModalButtonClick}/>
             <SearchForm handleSearch={onSearch} onToggle={toggleShort}/>
             {isLoadingMovies 
                 ? <Preloader /> 
                 : <Cards cards={result} page='saved' handleUnSaveFilm={handleUnSaveFilm} />
             }
+            <Footer />
         </>
     );
 }
