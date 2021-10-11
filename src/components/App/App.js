@@ -1,4 +1,4 @@
-import React from 'react';
+import React , {useCallback } from 'react';
 import { Route, Switch, useHistory } from 'react-router-dom';
 
 // мои роуты в приложении
@@ -48,19 +48,21 @@ import moviesFormat from '../../utils/moviesFormat';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 
 import react from 'react';
-import { findByLabelText } from '@testing-library/dom';
+import Preloader from '../Preloader/Preloader';
 
 function App() {
   const history = useHistory();
 
   const [currentUser, setCurrentUser] = React.useState({}); //стейт с информацией о текущем пользователе
-  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+  const [isLoggedIn, setIsLoggedIn] = React.useState(localStorage.getItem("isLoggedIn") ?? false);
 
   const [isPopupMenuOpen, setIsPopupMenuOpen] = React.useState(false);
 
   const [isLoadingMovies, setIsLoadingMovies] = React.useState(false);
   const [movies, setMovies] = react.useState([]);
   const [savedMovies, setSavedMovies] = react.useState([]);
+
+  const [isTokenCheking, setIsTokenCheking] = React.useState(false);
 
   function handleModalButtonClick() {
     setIsPopupMenuOpen(true);
@@ -105,8 +107,6 @@ function App() {
         console.log(res);
       })
       .catch((err) => {
-        // setIsSuccessRegistration(false);
-        // setIsInfoTooltipOpen(true);
         console.log(err);
       });
   }
@@ -124,30 +124,51 @@ function App() {
       .catch(err => console.log(err));
   }
 
-  React.useEffect(() => {
+
+  const handleTokenCheck = useCallback(() => { 
+    setIsTokenCheking(true);
     checkToken()
-      .then((res) => {
-        console.log(res);
-        setIsLoggedIn(true);
-        // setUserEmail(res.email); //данным способом мы выводили адрес на экран
-        history.push(routes.MOVIES);
-      })
-      .catch((err) => 
-        console.log(err)
-      );
-  }, []); 
+    .then((res) => {
+      console.log(res);
+      setIsLoggedIn(true);
+      console.log('ПРОВЕРКА ТОКЕНА')
+      localStorage.setItem('isLoggedIn', true);
+      // setUserEmail(res.email); //данным способом мы выводили адрес на экран
+      // history.push(routes.MOVIES);
+    })
+    .catch((err) => {
+      console.log(err);
+      setIsLoggedIn(false);
+      localStorage.setItem('isLoggedIn', false);
+    }
+    )
+    .finally(()=> {
+      setIsTokenCheking(false);
+    })
+  }, [])
 
   React.useEffect(() => {
-    handleGetMovies();
+    handleTokenCheck();
+  }, [handleTokenCheck])
+
+  React.useEffect(() => {
+    // handleGetMovies();
     handleGetSavedMovies();
     handleGetUserInfo();
   }, [isLoggedIn]);
 
+  function cleanLocalStorage() {
+    localStorage.clear();
+  }
   function handleGetMovies() {
     setIsLoadingMovies(true);
     getMovies()
       .then((movies) => {
-        setMovies(moviesFormat(movies));
+        // setMovies(moviesFormat(movies));
+        const moviesFormatted = moviesFormat(movies);
+        localStorage.setItem("movies", JSON.stringify(moviesFormatted));
+        console.log(moviesFormatted);
+        return moviesFormatted;  
       })
       .catch((err)=> {
         console.log(err);
@@ -182,6 +203,7 @@ function App() {
   }
 
   function handleFollowMovie(movie) {
+    console.log(movie);
     addMovie(movie)
       .then((newItem) => {
         if (newItem) {
@@ -189,7 +211,7 @@ function App() {
         }
       })
       .catch((err) => {
-        console.log(err);
+        console.log(err.message);
       });
   };
 
@@ -206,23 +228,29 @@ function App() {
   }
   
   function handleUpdateUser(name, email) {
-    // обрабочик <EditProfilePopup.. onUpdateUser=... />   (Новые данные поднимаются из дочернего popupwithForm, где происходит сабмит)
-    // setIsFetching(true);
     setInfoUser(name, email)
       .then((userData) => {
         setCurrentUser(userData);
       })
       .catch((err) => console.log(err))
       .finally(()=> {
-        //setIsFetching(false);
+        // setIsFetching(false);
+        //
+        // Добавить уведомление об успешном изменении данных
+        //
       });
   }
-
+// <Route path={routes.MOVIES}>
+//<Header auth={isLoggedIn} promo={false} onModalButtonClick={handleModalButtonClick}/>
+//<Footer />
+//</Route>
   return (
     <div className="App">
       <CurrentUserContext.Provider value={currentUser}>
         <div className="page">
-          <Switch>
+          {isTokenCheking
+          ? <Preloader /> 
+          :<Switch>
             <Route exact path={routes.LANDING}>
               <Header auth={isLoggedIn} promo={true} onModalButtonClick={handleModalButtonClick}/>
               <Promo />
@@ -232,21 +260,21 @@ function App() {
               <Portfolio />
               <Footer />
             </Route>
-            <Route path={routes.MOVIES}>
-              <Header auth={isLoggedIn} promo={false} onModalButtonClick={handleModalButtonClick}/>
+           
               <ProtectedRoute 
                 isLoggedIn={isLoggedIn}
                 path={routes.MOVIES}
                 component={Movies}
-                cards={movies}
+                // cards={movies}
                 isLoadingMovies={isLoadingMovies}
                 handleSaveFilm={handleFollowMovie}
 
                 checkIsSavedFilm={checkIsSavedFilm}
                 handleUnSaveFilm={handleUnfollowMovie}
+
+                handleGetMovies={handleGetMovies}
               />
-              <Footer />
-            </Route>
+           
             <Route path={routes.SAVED_MOVIES}>
               <Header auth={isLoggedIn} promo={false} onModalButtonClick={handleModalButtonClick}/>
               <ProtectedRoute 
@@ -279,6 +307,7 @@ function App() {
               <PageNotFound />
             </Route>
           </Switch>
+          }
           <PopupMenu isOpen={isPopupMenuOpen} onClose={closePopupMenu} />
         </div>
       </CurrentUserContext.Provider>

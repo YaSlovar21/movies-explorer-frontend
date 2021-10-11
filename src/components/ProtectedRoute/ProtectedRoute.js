@@ -6,7 +6,7 @@ import routes from '../../config/routes';
 
 const ProtectedRoute = ({component: Component, ...props}) => {
     return (
-        <Route>
+        <Route path={props.path}>
             {props.isLoggedIn ? <Component {...props} /> : <Redirect to={routes.SIGN_IN} />}
         </Route>
     );

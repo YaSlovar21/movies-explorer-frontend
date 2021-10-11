@@ -48,7 +48,7 @@ function Cards({ cards , page, handleSaveFilm, handleUnSaveFilm, checkIsSavedFil
         <section class="cards section-content section-content_films">
             <ul class="films">
                 {cards.slice(0, countToRender).map((film) => (
-                    <Film film={film} detectType={detectType} handleSaveFilm={handleSaveFilm} handleUnSaveFilm={handleUnSaveFilm} checkIsSavedFilm={checkIsSavedFilm} />
+                    <Film key={film.id} film={film} detectType={detectType} handleSaveFilm={handleSaveFilm} handleUnSaveFilm={handleUnSaveFilm} checkIsSavedFilm={checkIsSavedFilm} />
                 ))}
             </ul>
             {cards.length > countToRender 

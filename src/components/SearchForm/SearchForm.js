@@ -1,16 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 
 import './SearchForm.css';
 
-function SearchForm({ handleSearch }) {
+function SearchForm({ handleSearch, onToggle }) {
    
     const [request, setRequest] = React.useState('');
-    const [isShortChecked, setIsShortChecked] = React.useState(false);
     const [isEmpty, setIsEmpty] = React.useState('');
+
+    const [isShortChecked, setIsShortChecked] = useState(false);
 
     function handleClick(evt){
         evt.target.classList.toggle('form-search__filterbutton_active');
         setIsShortChecked(!isShortChecked);
+        onToggle();
     }
 
     function handleSearchFocused(evt) {
@@ -19,17 +21,18 @@ function SearchForm({ handleSearch }) {
 
     function handleRequestChange(evt) {
         setRequest(evt.target.value);
-    }
+     }
 
     function handleSubmit(evt) {
         evt.preventDefault();
+        
         if (request === '') {
             setIsEmpty('Введите запрос для поиска фильмов...')
-            handleSearch(request, isShortChecked);
+            handleSearch(request);
         } else {
             setIsEmpty('');
             console.log(request);
-            handleSearch(request, isShortChecked);
+            handleSearch(request);
         }
     }
 
@@ -46,7 +49,7 @@ function SearchForm({ handleSearch }) {
                             value={request}
                             onChange={handleRequestChange}
                         />
-                        <button className="form-search__button">Поиск</button>
+                        <button className="form-search__button" type="submit">Поиск</button>
                     </div>
                     <span class="form-search__hint">{isEmpty}</span>
                     <div className="form-search__filter">

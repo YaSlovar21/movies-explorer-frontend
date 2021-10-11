@@ -12,7 +12,9 @@ function Profile({ handleProfileUpdate, handleLogout }) {
     const { handleChange, errors, isValid } = formWithValidation;
 
     const { name = currentUser.name, email = currentUser.email } = formWithValidation.values;
-     
+    
+    const isNotChanged = (name===currentUser.name && email===currentUser.email);
+
     function handleSubmit(evt) {
         evt.preventDefault();
         handleProfileUpdate(name, email);
@@ -49,7 +51,7 @@ function Profile({ handleProfileUpdate, handleLogout }) {
             </div>
             <span className="profile__span-error">{errors.email}</span>
 
-            <button className={`profile__edit-button ${!isValid ? 'profile__edit-button_disabled' : ''}`} disabled={!isValid}>Редактировать</button>
+            <button className={`profile__edit-button ${(!isValid || isNotChanged) ? 'profile__edit-button_disabled' : ''}`} disabled={!isValid || isNotChanged}>Редактировать</button>
             <button className="profile__logout" onClick={handleLogout}>Выйти из аккаунта</button>
         </form>
     );

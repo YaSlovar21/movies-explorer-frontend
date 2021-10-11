@@ -7,26 +7,30 @@ import Preloader from "../Preloader/Preloader";
 import MovieSearch from "../../utils/MovieSearch";
 
 function SavedMovies({cards, isLoadingMovies, handleUnSaveFilm}) {
+    
     React.useEffect(()=> {
         setSearched(cards);
-    },[cards])
+    }, [cards]);
+
     const [searched, setSearched] = React.useState(cards);
+    const [isShortChecked, setIsShortChecked] = React.useState(false);
 
-    function onSearch(request, isShortChecked) {
-        console.log(isShortChecked);
-        setSearched(MovieSearch(cards, request, isShortChecked));
+    function toggleShort() {
+        setIsShortChecked((prev) => !prev);
     }
 
-    function setInitArray() {
-        setSearched(cards);
+    function onSearch(request) {
+        setSearched(MovieSearch(cards, request, 0));
     }
 
+    const result = isShortChecked ? searched.filter((item) => item.duration < 41 ) : searched;
+    
     return (
         <>
-            <SearchForm handleSearch={onSearch} />
+            <SearchForm handleSearch={onSearch} onToggle={toggleShort}/>
             {isLoadingMovies 
                 ? <Preloader /> 
-                : <Cards cards={searched} page='saved' handleUnSaveFilm={handleUnSaveFilm} />
+                : <Cards cards={result} page='saved' handleUnSaveFilm={handleUnSaveFilm} />
             }
         </>
     );
