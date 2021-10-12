@@ -74,7 +74,7 @@ function App() {
   function closePopupMenu() {
     setIsPopupMenuOpen(false);
   }
-
+  //-тест
   function handleGetUserInfo() {
     if (!localStorage.getItem('currentUser')) {
       getInfoUser()
@@ -98,7 +98,6 @@ function App() {
         //history.push(routes.SIGN_IN);
         console.log(data);
         handleLogin(email, password);
-        //history.push(routes.MOVIES);
       })
       .catch((err) => {
         // setIsSuccessRegistration(false);
@@ -112,12 +111,10 @@ function App() {
       .then((res) => {
         setIsLoggedIn(true);
         history.push(routes.MOVIES);
-        // setUserEmail(email);
         console.log(res);
       })
       .catch((err) => {
         console.log(err);
-        //setIsLoggedIn(false);
       });
   }
 
@@ -135,36 +132,11 @@ function App() {
       .catch(err => console.log(err));
   }
 
-/*
-  const handleTokenCheck = useCallback(()=> { 
-    //setIsTokenCheking(true);
-    checkToken()
-    .then((res) => {
-      console.log(res);
-      setIsLoggedIn(true);
-      //localStorage.setItem('isLoggedIn', true);
-      // setUserEmail(res.email); //данным способом мы выводили адрес на экран
-      // history.push(routes.MOVIES);
-    })
-    .catch((err) => {
-      console.log('Ошибка проверки', err);
-      setIsLoggedIn(false);
-      //localStorage.setItem('isLoggedIn', false);
-    }
-    )
-    .finally(()=> {
-      //setIsTokenCheking(false);
-      console.log(isLoggedIn)
-    })
-  }, [])
-*/
   React.useEffect(() => {
-    
     checkToken()
     .then((res) => {
       console.log(res);
       setIsLoggedIn(true);
-      //history.push(routes.PROFILE);
       setIsTokenCheking(false);
     })
     .catch((err) => {
@@ -229,7 +201,7 @@ function App() {
         setIsLoadingMovies(false);
       })
   }
-
+  //----тест 
   function handleGetSavedMovies() {
     setIsLoadingMovies(true);
     getSavedMovies()
