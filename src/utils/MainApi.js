@@ -6,7 +6,7 @@ export const register = (name, password, email) => {
     headers: {
       'Content-Type': 'application/json'
     },
-    //credentials: 'include',
+    credentials: 'include',
     body: JSON.stringify({name, password, email})
   })
   .then((response) => {
@@ -61,7 +61,7 @@ export const checkToken = () => {
   })
   .then((response) => {
     if (response.ok) {
-      console.log(response);
+      console.log('проверка из апи успех');
       return response.json();
     } else {
       return Promise.reject(`Ошибка: ${response.status}`);

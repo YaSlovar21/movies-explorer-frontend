@@ -55,8 +55,8 @@ function Profile({ handleProfileUpdate, handleLogout, handleModalButtonClick, is
             </div>
             <span className="profile__span-error">{errors.email}</span>
 
-            <button className={`profile__edit-button ${(!isValid || isNotChanged) ? 'profile__edit-button_disabled' : ''}`} disabled={!isValid || isNotChanged}>Редактировать</button>
-            <button className="profile__logout" onClick={handleLogout}>Выйти из аккаунта</button>
+            <button type="submit" className={`profile__edit-button ${(!isValid || isNotChanged) ? 'profile__edit-button_disabled' : ''}`} disabled={!isValid || isNotChanged}>Редактировать</button>
+            <button type="button" className="profile__logout" onClick={handleLogout}>Выйти из аккаунта</button>
         </form>
         <Footer />
         </>

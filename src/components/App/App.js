@@ -54,7 +54,7 @@ function App() {
   const history = useHistory();
 
   const [currentUser, setCurrentUser] = React.useState({}); //стейт с информацией о текущем пользователе
-  const [isLoggedIn, setIsLoggedIn] = React.useState(true);
+  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
 
   const [isPopupMenuOpen, setIsPopupMenuOpen] = React.useState(false);
   const [isInfoPopupOpen, setIsInfoPopupOpen] = React.useState(false);
@@ -64,7 +64,7 @@ function App() {
   const [movies, setMovies] = react.useState([]);
   const [savedMovies, setSavedMovies] = react.useState([]);
 
-  const [isTokenCheking, setIsTokenCheking] = React.useState(false);
+  const [isTokenCheking, setIsTokenCheking] = React.useState(true);
 
 
   function handleModalButtonClick() {
@@ -97,7 +97,7 @@ function App() {
         // setIsInfoTooltipOpen(true);
         //history.push(routes.SIGN_IN);
         console.log(data);
-        login(email, password);
+        handleLogin(email, password);
         //history.push(routes.MOVIES);
       })
       .catch((err) => {
@@ -117,6 +117,7 @@ function App() {
       })
       .catch((err) => {
         console.log(err);
+        //setIsLoggedIn(false);
       });
   }
 
@@ -134,9 +135,9 @@ function App() {
       .catch(err => console.log(err));
   }
 
-
-  const handleTokenCheck = useCallback(() => { 
-    setIsTokenCheking(true);
+/*
+  const handleTokenCheck = useCallback(()=> { 
+    //setIsTokenCheking(true);
     checkToken()
     .then((res) => {
       console.log(res);
@@ -146,29 +147,68 @@ function App() {
       // history.push(routes.MOVIES);
     })
     .catch((err) => {
-      console.log(err);
+      console.log('Ошибка проверки', err);
       setIsLoggedIn(false);
       //localStorage.setItem('isLoggedIn', false);
     }
     )
+    .finally(()=> {
+      //setIsTokenCheking(false);
+      console.log(isLoggedIn)
+    })
+  }, [])
+*/
+  React.useEffect(() => {
+    
+    checkToken()
+    .then((res) => {
+      console.log(res);
+      setIsLoggedIn(true);
+      //history.push(routes.PROFILE);
+      setIsTokenCheking(false);
+    })
+    .catch((err) => {
+      console.log('Ошибка проверки', err);
+    })
     .finally(()=> {
       setIsTokenCheking(false);
     })
   }, [])
 
   React.useEffect(() => {
-    handleTokenCheck();
-  }, [handleTokenCheck])
+    if (isLoggedIn) {
+      if (!localStorage.getItem('currentUser')) {
+        getInfoUser()
+          .then((userData) => {
+            setCurrentUser(userData);
+            localStorage.setItem('currentUser',JSON.stringify(userData))
+          })
+          .catch((err) => {
+            console.log(err);
+          })
+      } else {
+        setCurrentUser(JSON.parse(localStorage.getItem('currentUser')));
+      }
 
-  React.useEffect(() => {
+      if (!localStorage.getItem('savedMovies')) {
+        getSavedMovies()
+        .then((saved) => {
+            setSavedMovies(saved);
+            localStorage.setItem("savedMovies", JSON.stringify(saved));
+          console.log(saved);
+        })
+        .catch((err)=> {
+          console.log(err);
+        })
+        } else {
+        setSavedMovies(JSON.parse(localStorage.getItem('savedMovies')));
+      }
+    }
     // handleGetMovies();
-    handleGetSavedMovies();
-    handleGetUserInfo();
-    
-    //console.log(localStorage.getItem('reqHash'));
-    //setInitMovies(JSON.parse(localStorage.getItem('reqHash')));
-    //setInitToggle(Boolean(localStorage.getItem('toggleState')));
-  }, []);
+    //handleGetSavedMovies();
+    //handleGetUserInfo();
+
+  }, [isLoggedIn]);
 
   
  
@@ -194,7 +234,13 @@ function App() {
     setIsLoadingMovies(true);
     getSavedMovies()
       .then((saved) => {
-        setSavedMovies(saved);
+        if (!localStorage.getItem('savedMovies')) {
+          setSavedMovies(saved);
+          localStorage.setItem("savedMovies", JSON.stringify(saved));
+        } else {
+          setSavedMovies(JSON.parse(localStorage.getItem('savedMovies')));
+        }
+        
         //localStorage.setItem("savedMovies", JSON.stringify(saved));
         console.log(saved);
       })
@@ -221,6 +267,7 @@ function App() {
         if (newItem) {
           setSavedMovies((saved) => [...saved, newItem]);
         }
+        localStorage.setItem('savedMovies', JSON.stringify([...savedMovies, newItem]));
       })
       .catch((err) => {
         console.log(err.message);
@@ -235,7 +282,7 @@ function App() {
         setSavedMovies((savedMovies) => {
           return savedMovies.filter((m) => m._id !== id);
         })
-        
+        localStorage.setItem('savedMovies', JSON.stringify(savedMovies.filter((m) => m._id !== id)));
       })
       .catch((err) => console.log(err));
   }
@@ -246,6 +293,7 @@ function App() {
         setCurrentUser(userData);
         setIsSuccess(true);
         setIsInfoPopupOpen(true);
+        localStorage.setItem('currentUser', JSON.stringify({"name": name, "email": email}));
       })
       .catch((err) => {
         console.log(err);
@@ -253,7 +301,7 @@ function App() {
         setIsInfoPopupOpen(true);
       })
       .finally(()=> {
-  
+        
       });
   }
 
@@ -261,13 +309,13 @@ function App() {
     setIsInfoPopupOpen(false);
   }
   
+
   return (
     <div className="App">
       <CurrentUserContext.Provider value={currentUser}>
         <div className="page">
-          {isTokenCheking
-          ? <Preloader /> 
-          :<Switch>
+          
+          {isTokenCheking ? <Preloader /> : <Switch>
             <Route exact path={routes.LANDING}>
               <Header auth={isLoggedIn} promo={true} onModalButtonClick={handleModalButtonClick}/>
               <Promo />
@@ -277,7 +325,7 @@ function App() {
               <Portfolio />
               <Footer />
             </Route>
-           
+            
               <ProtectedRoute 
                 isLoggedIn={isLoggedIn}
                 path={routes.MOVIES}
@@ -293,7 +341,7 @@ function App() {
                 handleGetMovies={handleGetMovies}
               />
 
-              <ProtectedRoute 
+            <ProtectedRoute 
                 isLoggedIn={isLoggedIn}
                 path={routes.SAVED_MOVIES}
                 component={SavedMovies}
@@ -312,7 +360,7 @@ function App() {
               />
 
             <Route path={routes.SIGN_IN}>
-              <Login handleLogin={handleLogin} />
+              <Login handleLogin={handleLogin} isLoggedIn={isLoggedIn} />
             </Route>
             <Route path={routes.SIGN_UP}>
               <Register handleRegister={handleRegister} />
@@ -321,7 +369,7 @@ function App() {
               <PageNotFound />
             </Route>
           </Switch>
-          }
+          } 
           <PopupMenu isOpen={isPopupMenuOpen} onClose={closePopupMenu} />
           <InfoTooltip
             success={isSuccess}
@@ -334,7 +382,8 @@ function App() {
       </CurrentUserContext.Provider>
     </div>
     
-  );
+  )
 }
+
 
 export default App;

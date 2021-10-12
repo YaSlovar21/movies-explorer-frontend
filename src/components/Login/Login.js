@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 
 import './Login.css';
 
@@ -8,7 +8,7 @@ import routes from "../../config/routes";
 
 import useFormWithValidation from "../../utils/useFormWithValidation";
 
-function Login({ handleLogin }) {
+function Login({ handleLogin ,isLoggedIn }) {
 
   const formWithValidation = useFormWithValidation();
   const { handleChange, errors, isValid } = formWithValidation;
@@ -20,8 +20,13 @@ function Login({ handleLogin }) {
         formWithValidation.resetForm();
         
   }
+  
+  //if (isLoggedIn) {
+  //  return (<Redirect to={routes.MOVIES} />)
+  //} else {
 
-    return (
+    return ( 
+      
         <form className="form" onSubmit={handleSubmit}>
           <Link className="form__logo" to={routes.LANDING}><img src={logo} /></Link>
           <h2 className="form__heading">Рады видеть!</h2>
@@ -54,7 +59,9 @@ function Login({ handleLogin }) {
           </button>
           
         </form>
-      );
+
+    )
+  //}
 };
 
 export default Login;
